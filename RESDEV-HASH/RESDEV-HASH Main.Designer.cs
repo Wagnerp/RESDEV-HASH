@@ -31,15 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.MainTab_ctl = new System.Windows.Forms.TabControl();
             this.HashOneFile = new System.Windows.Forms.TabPage();
-            this.CompareFiles = new System.Windows.Forms.TabPage();
-            this.hash_lbl = new System.Windows.Forms.Label();
-            this.Hashes_cb = new System.Windows.Forms.ComboBox();
-            this.TabToolTips = new System.Windows.Forms.ToolTip(this.components);
-            this.selectfile_btn = new System.Windows.Forms.Button();
-            this.about_btn = new System.Windows.Forms.Button();
-            this.hashoutput_tb = new System.Windows.Forms.TextBox();
-            this.hashprogress_pb = new System.Windows.Forms.ProgressBar();
             this.about_llbl = new System.Windows.Forms.LinkLabel();
+            this.hashprogress_pb = new System.Windows.Forms.ProgressBar();
+            this.hashoutput_tb = new System.Windows.Forms.TextBox();
+            this.about_btn = new System.Windows.Forms.Button();
+            this.selectfile_btn = new System.Windows.Forms.Button();
+            this.Hashes_cb = new System.Windows.Forms.ComboBox();
+            this.hash_lbl = new System.Windows.Forms.Label();
+            this.CompareFiles = new System.Windows.Forms.TabPage();
+            this.TabToolTips = new System.Windows.Forms.ToolTip(this.components);
+            this.bgw = new System.ComponentModel.BackgroundWorker();
             this.MainTab_ctl.SuspendLayout();
             this.HashOneFile.SuspendLayout();
             this.SuspendLayout();
@@ -71,25 +72,54 @@
             this.HashOneFile.Text = "Hash Single File";
             this.HashOneFile.UseVisualStyleBackColor = true;
             // 
-            // CompareFiles
+            // about_llbl
             // 
-            this.CompareFiles.Location = new System.Drawing.Point(4, 22);
-            this.CompareFiles.Name = "CompareFiles";
-            this.CompareFiles.Padding = new System.Windows.Forms.Padding(3);
-            this.CompareFiles.Size = new System.Drawing.Size(504, 468);
-            this.CompareFiles.TabIndex = 1;
-            this.CompareFiles.Text = "Compare File Hashes";
-            this.CompareFiles.UseVisualStyleBackColor = true;
+            this.about_llbl.AutoSize = true;
+            this.about_llbl.Location = new System.Drawing.Point(367, 453);
+            this.about_llbl.Name = "about_llbl";
+            this.about_llbl.Size = new System.Drawing.Size(134, 13);
+            this.about_llbl.TabIndex = 6;
+            this.about_llbl.TabStop = true;
+            this.about_llbl.Text = "About RESDEV-Hash Tool";
             // 
-            // hash_lbl
+            // hashprogress_pb
             // 
-            this.hash_lbl.AutoSize = true;
-            this.hash_lbl.Location = new System.Drawing.Point(10, 15);
-            this.hash_lbl.Name = "hash_lbl";
-            this.hash_lbl.Size = new System.Drawing.Size(35, 13);
-            this.hash_lbl.TabIndex = 0;
-            this.hash_lbl.Text = "Hash:";
-            this.hash_lbl.Click += new System.EventHandler(this.hash_lbl_Click);
+            this.hashprogress_pb.Location = new System.Drawing.Point(6, 418);
+            this.hashprogress_pb.Name = "hashprogress_pb";
+            this.hashprogress_pb.Size = new System.Drawing.Size(492, 23);
+            this.hashprogress_pb.Step = 5;
+            this.hashprogress_pb.TabIndex = 5;
+            // 
+            // hashoutput_tb
+            // 
+            this.hashoutput_tb.Location = new System.Drawing.Point(8, 51);
+            this.hashoutput_tb.Multiline = true;
+            this.hashoutput_tb.Name = "hashoutput_tb";
+            this.hashoutput_tb.ReadOnly = true;
+            this.hashoutput_tb.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.hashoutput_tb.Size = new System.Drawing.Size(490, 361);
+            this.hashoutput_tb.TabIndex = 4;
+            // 
+            // about_btn
+            // 
+            this.about_btn.Location = new System.Drawing.Point(421, 10);
+            this.about_btn.Name = "about_btn";
+            this.about_btn.Size = new System.Drawing.Size(75, 23);
+            this.about_btn.TabIndex = 3;
+            this.about_btn.Text = "Abort";
+            this.TabToolTips.SetToolTip(this.about_btn, "Abort Current Opperation");
+            this.about_btn.UseVisualStyleBackColor = true;
+            // 
+            // selectfile_btn
+            // 
+            this.selectfile_btn.Location = new System.Drawing.Point(194, 10);
+            this.selectfile_btn.Name = "selectfile_btn";
+            this.selectfile_btn.Size = new System.Drawing.Size(196, 23);
+            this.selectfile_btn.TabIndex = 2;
+            this.selectfile_btn.Text = "Select File && Go";
+            this.TabToolTips.SetToolTip(this.selectfile_btn, "Compute Hash of Single File");
+            this.selectfile_btn.UseVisualStyleBackColor = true;
+            this.selectfile_btn.Click += new System.EventHandler(this.selectfile_btn_Click);
             // 
             // Hashes_cb
             // 
@@ -105,53 +135,30 @@
             this.Hashes_cb.TabIndex = 1;
             this.TabToolTips.SetToolTip(this.Hashes_cb, "Select the type of Hash you would like to use");
             // 
-            // selectfile_btn
+            // hash_lbl
             // 
-            this.selectfile_btn.Location = new System.Drawing.Point(194, 10);
-            this.selectfile_btn.Name = "selectfile_btn";
-            this.selectfile_btn.Size = new System.Drawing.Size(196, 23);
-            this.selectfile_btn.TabIndex = 2;
-            this.selectfile_btn.Text = "Select File && Go";
-            this.TabToolTips.SetToolTip(this.selectfile_btn, "Compute Hash of Single File");
-            this.selectfile_btn.UseVisualStyleBackColor = true;
+            this.hash_lbl.AutoSize = true;
+            this.hash_lbl.Location = new System.Drawing.Point(10, 15);
+            this.hash_lbl.Name = "hash_lbl";
+            this.hash_lbl.Size = new System.Drawing.Size(35, 13);
+            this.hash_lbl.TabIndex = 0;
+            this.hash_lbl.Text = "Hash:";
+            this.hash_lbl.Click += new System.EventHandler(this.hash_lbl_Click);
             // 
-            // about_btn
+            // CompareFiles
             // 
-            this.about_btn.Location = new System.Drawing.Point(421, 10);
-            this.about_btn.Name = "about_btn";
-            this.about_btn.Size = new System.Drawing.Size(75, 23);
-            this.about_btn.TabIndex = 3;
-            this.about_btn.Text = "Abort";
-            this.TabToolTips.SetToolTip(this.about_btn, "Abort Current Opperation");
-            this.about_btn.UseVisualStyleBackColor = true;
+            this.CompareFiles.Location = new System.Drawing.Point(4, 22);
+            this.CompareFiles.Name = "CompareFiles";
+            this.CompareFiles.Padding = new System.Windows.Forms.Padding(3);
+            this.CompareFiles.Size = new System.Drawing.Size(504, 471);
+            this.CompareFiles.TabIndex = 1;
+            this.CompareFiles.Text = "Compare File Hashes";
+            this.CompareFiles.UseVisualStyleBackColor = true;
             // 
-            // hashoutput_tb
+            // bgw
             // 
-            this.hashoutput_tb.Location = new System.Drawing.Point(8, 51);
-            this.hashoutput_tb.Multiline = true;
-            this.hashoutput_tb.Name = "hashoutput_tb";
-            this.hashoutput_tb.ReadOnly = true;
-            this.hashoutput_tb.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.hashoutput_tb.Size = new System.Drawing.Size(490, 361);
-            this.hashoutput_tb.TabIndex = 4;
-            // 
-            // hashprogress_pb
-            // 
-            this.hashprogress_pb.Location = new System.Drawing.Point(6, 418);
-            this.hashprogress_pb.Name = "hashprogress_pb";
-            this.hashprogress_pb.Size = new System.Drawing.Size(492, 23);
-            this.hashprogress_pb.Step = 5;
-            this.hashprogress_pb.TabIndex = 5;
-            // 
-            // about_llbl
-            // 
-            this.about_llbl.AutoSize = true;
-            this.about_llbl.Location = new System.Drawing.Point(367, 453);
-            this.about_llbl.Name = "about_llbl";
-            this.about_llbl.Size = new System.Drawing.Size(134, 13);
-            this.about_llbl.TabIndex = 6;
-            this.about_llbl.TabStop = true;
-            this.about_llbl.Text = "About RESDEV-Hash Tool";
+            this.bgw.WorkerReportsProgress = true;
+            this.bgw.WorkerSupportsCancellation = true;
             // 
             // Form1
             // 
@@ -181,6 +188,7 @@
         private System.Windows.Forms.ProgressBar hashprogress_pb;
         private System.Windows.Forms.TextBox hashoutput_tb;
         private System.Windows.Forms.LinkLabel about_llbl;
+        private System.ComponentModel.BackgroundWorker bgw;
     }
 }
 
