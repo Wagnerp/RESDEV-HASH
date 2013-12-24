@@ -15,5 +15,10 @@ namespace RESDEV_HASH
         {
             InitializeComponent();
         }
+
+        private void hash_lbl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
